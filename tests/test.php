@@ -40,6 +40,12 @@ class LinkExtractorTest extends PHPUnit_Framework_TestCase
     $text = 'img="http://example.com/sites/default/files/styles/style1/public/insert/test.png"';
     $this->assertEquals('img="REPLACE"', _old_image_link_corrector_process($text));
   }
+  public function testNewImageLink()
+  {
+    $full_link = 'sites/default/files/styles/style1/public/insert/test.png?itok=asdf';
+    $matches = old_image_link_corrector_parse_text($full_link);
+    $this->assertNull($matches);
+  }
 }
 /**
  * Mock image_style_url() function.
