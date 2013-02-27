@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file
+ * Main file for the Old Image corrector module, which add image token to image link which made before Drupal 7.20.
+ * @see http://drupal.org/drupal-7.20-release-notes
+ */
 
 /**
  * Implements hook_filter_info().

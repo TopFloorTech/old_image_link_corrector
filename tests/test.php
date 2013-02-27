@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file
+ * Test file for the Old Image corrector module.
+ */
+
 require_once '../old_image_link_corrector.module';
 class LinkExtractorTest extends PHPUnit_Framework_TestCase
 {
