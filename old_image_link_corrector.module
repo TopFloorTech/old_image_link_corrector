@@ -23,12 +23,15 @@ function old_image_link_corrector_filter_info() {
 function _old_image_link_corrector_process($text) {
   if ($matches = old_image_link_corrector_parse_text($text)) {
     foreach ($matches as $image_link) {
-     $text = str_replace($image_link['full_link'], image_style_url($image_link['style_name'], $image_link['scheme'] . '://' . $image_link['path']), $text);
+    $text = str_replace($image_link['full_link'], image_style_url($image_link['style_name'], $image_link['scheme'] . '://' . $image_link['path']), $text);
     }
   }
   return $text;
 }
 
+/**
+ * Search styled image in text and convert its to an array
+ */
 function old_image_link_corrector_parse_text($text) {
   if (preg_match_all('#(?P<full_link>[a-zA-Z0-9/_.:-]*/styles/(?P<style_name>[a-zA-z0-9_-]+)/(?P<scheme>[a-zA-z0-9_-]+)/(?P<path>\\S+\\.(png|jpg|jpeg|gif)))(?!\\?)#', $text, $matches, PREG_SET_ORDER)) {
     return $matches;
