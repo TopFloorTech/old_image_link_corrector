@@ -1,7 +1,8 @@
 <?php
 /**
  * @file
- * Main file for the Old Image corrector module, which add image token to image link which made before Drupal 7.20.
+ * Main file for the Old Image corrector module, which add image token to image
+ *   link which made before Drupal 7.20.
  * @see http://drupal.org/drupal-7.20-release-notes
  */
 
@@ -9,31 +10,35 @@
  * Implements hook_filter_info().
  */
 function old_image_link_corrector_filter_info() {
-  $filters['old_image_link_corrector'] = array(
-    'title' => t('Old Image Link Corrector'),
-    'description' => t(''),
-    'process callback' => '_old_image_link_corrector_process',
-  );
-  return $filters;
+	$filters['old_image_link_corrector'] = [
+		'title'            => t('Old Image Link Corrector'),
+		'description'      => t(''),
+		'process callback' => '_old_image_link_corrector_process',
+	];
+
+	return $filters;
 }
 
 /**
  * Implements hook_filter_FILTER_process().
  */
 function _old_image_link_corrector_process($text) {
-  if ($matches = old_image_link_corrector_parse_text($text)) {
-    foreach ($matches as $image_link) {
-    $text = str_replace($image_link['full_link'], image_style_url($image_link['style_name'], $image_link['scheme'] . '://' . $image_link['path']), $text);
-    }
-  }
-  return $text;
+	if ($matches = old_image_link_corrector_parse_text($text)) {
+		foreach ($matches as $image_link) {
+			$text = str_replace($image_link['full_link'], image_style_url($image_link['style_name'], $image_link['scheme'] . '://' . $image_link['path']), $text);
+		}
+	}
+
+	return $text;
 }
 
 /**
  * Search styled image in text and convert its to an array
  */
 function old_image_link_corrector_parse_text($text) {
-  if (preg_match_all('#(?P<full_link>[a-zA-Z0-9/_.:-]*/styles/(?P<style_name>[a-zA-z0-9_-]+)/(?P<scheme>[a-zA-z0-9_-]+)/(?P<path>\\S+\\.(png|jpg|jpeg|gif)))(?!\\?)#', $text, $matches, PREG_SET_ORDER)) {
-    return $matches;
-  }
+	$regex = '/(?P<full_link>[a-zA-Z0-9\/_.:-]*\/styles\/(?P<style_name>[a-zA-z0-9_-]+)\/(?P<scheme>[a-zA-z0-9_-]+)\/(?P<path>[^\.]+\.(png|jpg|jpeg|gif))(?P<token>\?[^"]*)?)/';
+
+	if (preg_match_all($regex, $text, $matches, PREG_SET_ORDER)) {
+		return $matches;
+	}
 }
